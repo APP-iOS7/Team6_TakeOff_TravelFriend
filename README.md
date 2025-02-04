@@ -27,5 +27,5 @@
 ## 설치 및 실행 🚀
 1. 저장소를 클론합니다.
    ```bash
-   git clone https://github.com/your-repo/travel-buddy.git
-   cd travel-buddy
+   git clone https://github.com/[your-repo]/Team6_TakeOff_TravelFriend.git
+   cd TravelFriend
