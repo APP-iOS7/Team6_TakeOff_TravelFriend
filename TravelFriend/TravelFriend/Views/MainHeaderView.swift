@@ -8,23 +8,32 @@
 import SwiftUI
 
 struct MainHeaderView: View {
+    @Environment(\.modelContext) private var modelContext
     
-    private var title: String = "재밌는 여행"
-    private var nation: String = "일본"
-    private var date: Date = Date()
-    private var periodString: String = "5박 6일"
-    private var budget: Int = 1000000
-    
+    @State private var dbManager: DBManager?
+    @State private var travelItem: Travel?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(title + " (\(nation))")
-            Text("총 예산: \(budget.commaSeparatedString)원")
-            Text("기간: \(periodString)")
+            Text("여행지: \(travelItem?.location ?? "NONE")")
+            Text("총 예산: \(travelItem?.budget.commaSeparatedString ?? "0.0")원")
+            Text("기간: \(travelItem?.period ?? 0)일")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(Color.primarySkyblue)
+        .onAppear() {
+            fetchTravelData()
+        }
+    }
+    
+    // MARK: load swiftData
+    private func fetchTravelData() {
+        dbManager = DBManager(modelContext: modelContext)
+        
+        if let firstTravel = dbManager?.fetchTravel() {
+            travelItem = firstTravel[0]
+        }
     }
 }
 

@@ -10,29 +10,29 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    
+    @State private var dbManager: DBManager?
 
     var body: some View {
         NavigationStack {
             TabView {
-                // TODO: 순서 바꾸기
                 MainView()
-                    .tabItem({
+                    .tabItem {
                         Image(systemName: "house")
                         Text("홈")
-                    })
+                    }
                 
                 ChatBotView()
-                    .tabItem({
+                    .tabItem {
                         Image(systemName: "bubble.circle")
                         Text("챗봇")
-                    })
+                    }
                 
                 ExchangeView()
-                    .tabItem({
+                    .tabItem {
                         Image(systemName: "checklist")
                         Text("체크리스트")
-                    })
+                    }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -50,5 +50,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Travel.self, inMemory: true) // 미리보기용 ModelContainer 설정
 }
