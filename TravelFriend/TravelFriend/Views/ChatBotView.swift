@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatBotView: View {
     let networkManager = NetWorkManager<OpenAIResponse>()
-    var country: String = "일본"
+    var country: String
     @State var location: String = ""
     @State var isAnswerIsGenerating: Bool = false // 응답 생성 중인지
     @State var isButtonShowing: Bool = true

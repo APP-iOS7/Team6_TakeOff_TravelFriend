@@ -25,27 +25,22 @@ struct ContentView: View {
         NavigationStack {
             TabView(selection: $selectedTab) {
                 
-                ChatBotView()
-                    .tabItem {
-                        Image(systemName: "checklist")
-                        Text("체크리스트")
-                    }
-                    .tag(0)
-                
+
                 // travelItem의 유무 [메인화면 <-> empty화면]
                 (travelItem != nil ? AnyView(MainView()) : AnyView(EmptyMainView(navigateToAddTravel: $navigateToAddTravel)))
                     .tabItem {
                         Image(systemName: "house")
                         Text("홈")
                     }
-                    .tag(1)
+                    .tag(0)
                 
-                ChatBotView()
+                (travelItem != nil ? AnyView(ChatBotView(country: travelItem?.location ?? "")) : AnyView(EmptyMainView(navigateToAddTravel: $navigateToAddTravel)))
                     .tabItem {
                         Image(systemName: "bubble.circle")
                         Text("챗봇")
                     }
-                    .tag(2)
+                    .tag(1)
+                    
             }
             .onAppear {
                 fetchTravelData()
