@@ -14,7 +14,7 @@ struct TravelFriendApp: App {
         let schema = Schema([
             Item.self,
             Travel.self,
-            DailySpending.self,
+            DailyExpense.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

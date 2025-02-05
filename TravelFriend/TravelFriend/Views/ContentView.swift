@@ -15,8 +15,10 @@ struct ContentView: View {
     @State private var isLoading: Bool = false
     @State private var selectedTab: Int = 0
     
-    @State private var navigateToExchange: Bool = false  // 환율화면 네비게이션 상태 관리
-    @State private var navigateToAddTravel: Bool = false  // 여행추가 네비게이션 상태 관리
+    @State private var navigateToExchange: Bool = false     // 환율화면 네비게이션 상태 관리
+    @State private var navigateToAddTravel: Bool = false    // 여행추가 네비게이션 상태 관리
+    @State private var navigateToExpenseList: Bool = false  // 지출조회화면 네비게이션 상태 관리
+    
     @State private var travelItem: Travel?
 
     var body: some View {
@@ -56,6 +58,12 @@ struct ContentView: View {
                     }
                     .tint(.primaryBlue)
                 }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { navigateToExpenseList = true }) {
+                        Image(systemName: "list.triangle")
+                    }
+                    .tint(.primaryBlue)
+                }
                 // 툴바 우측 여행등록 화면 이동 버튼 (등록시에는 invisible)
                 if travelItem == nil {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -71,6 +79,9 @@ struct ContentView: View {
             }
             .navigationDestination(isPresented: $navigateToAddTravel) {
                 AddTravelView() // ExchangeView로 이동
+            }
+            .navigationDestination(isPresented: $navigateToExpenseList) {
+                DailyExpenseListView() // DailyExpenseListView로 이동
             }
             
         }
