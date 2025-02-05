@@ -14,7 +14,7 @@ class Travel {
     var period: Int
     var budget: Double
     
-    init(location: String, period: Int, budget: Double) {
+    init(location: String = "", period: Int = 1, budget: Double = 0.0) {
         self.location = location
         self.period = period
         self.budget = budget
