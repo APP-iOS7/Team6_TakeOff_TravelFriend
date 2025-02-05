@@ -25,7 +25,7 @@ struct ContentView: View {
         NavigationStack {
             TabView(selection: $selectedTab) {
                 
-                ChatBotView()
+                ChatBotView(country: travelItem?.location ?? "")
                     .tabItem {
                         Image(systemName: "checklist")
                         Text("체크리스트")
@@ -40,7 +40,7 @@ struct ContentView: View {
                     }
                     .tag(1)
                 
-                ChatBotView()
+                ChatBotView(country: travelItem?.location ?? "")
                     .tabItem {
                         Image(systemName: "bubble.circle")
                         Text("챗봇")

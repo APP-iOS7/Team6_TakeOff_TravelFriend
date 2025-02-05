@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatBotView: View {
     let networkManager = NetWorkManager<OpenAIResponse>()
-    let country: String = "일본"
+    var country: String
     @State var location: String = ""
     @State var isAnswerIsGenerating: Bool = false // 응답 생성 중인지
     @State var isButtonShowing: Bool = true
@@ -176,5 +176,5 @@ fileprivate func requestGPT4(prompt: String) async throws -> String {
     return response.choices.first?.message.content ?? "No response"
 }
 #Preview {
-    ChatBotView()
+    ChatBotView(country: "일본")
 }
