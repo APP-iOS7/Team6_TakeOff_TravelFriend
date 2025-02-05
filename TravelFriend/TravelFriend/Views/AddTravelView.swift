@@ -47,7 +47,7 @@ struct AddTravelView: View {
                 }
             }
         }
-        .onAppear() {
+        .onAppear {
             self.dbManager = DBManager(modelContext: modelContext)
         }
         .navigationTitle("여행 경비 설정")

@@ -15,7 +15,6 @@ enum ExpenseCategoryType: String, CaseIterable {
     case food = "식비"
     case entertainment = "문화/공연"
     case souvenir = "기념품"
-    case etc = "기타"
     
     var icon: String {
         switch self {
@@ -26,30 +25,11 @@ enum ExpenseCategoryType: String, CaseIterable {
         case .food: return "🍔"
         case .entertainment: return "🎬"
         case .souvenir: return "🎁"
-        case .etc: return ""
         }
     }
     
-    // 한글 문자열을 이용해 Enum 값 찾기
-    init?(rawValue: String) {
-        switch rawValue {
-        case "입장료":
-            self = .ticket
-        case "숙소비":
-            self = .accommodation
-        case "쇼핑":
-            self = .shopping
-        case "교통비":
-            self = .transportation
-        case "식비":
-            self = .food
-        case "문화/공연":
-            self = .entertainment
-        case "기념품":
-            self = .souvenir
-        default:
-            self = .etc
-        }
+    static func from(_ typeString: String) -> ExpenseCategoryType? {
+        return ExpenseCategoryType.allCases.first { $0.rawValue == typeString }
     }
 }
 
@@ -57,6 +37,10 @@ struct DailyExpenseListView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var dbManager: DBManager?
+    
+    @State private var period: Int = 0
+    
+    @State private var isLoading: Bool = true // ✅ 로딩 상태 추가
     
     @State private var expenses: [DailyExpense] = []
     
@@ -73,67 +57,85 @@ struct DailyExpenseListView: View {
     }
     
     var body: some View {
-        List {
-            // 일자별 총 지출 섹션
-            ForEach(groupedExpenses.keys.sorted(), id: \.self) { day in
-                Section {
-                    Button(action: {
-                        toggleSection(for: day)
-                    }) {
-                        HStack {
-                            Text("DAY \(day)")
-                                .fontWeight(.regular)
-                            Spacer()
-                            Text("\(groupedExpenses[day] ?? 0, specifier: "%.0f")원")
-                                .fontWeight(.bold)
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle()) // 기본 버튼 스타일 제거
-                    
-                    // 🔽 Section이 펼쳐졌을 때 상세 내용 표시
-                    if expandedDays.contains(day) {
-                        let filteredList = expenses.filter {$0.day == day}
-                     
-                        VStack {
-                            ForEach(filteredList, id: \.id) { item in
+        Group {
+            if isLoading {
+                ProgressView("여행 정보를 불러오는 중...") // ✅ 로딩 화면
+            } else {
+                List {
+                    // 일자별 총 지출 섹션
+                    ForEach(1...period, id: \.self) { day in
+                        Section {
+                            Button(action: {
+                                toggleSection(for: day)
+                            }) {
                                 HStack {
-                                    Text(item.category) // 아이콘이 있다면 여기에 추가 가능
-                                        .font(.body)
-                                        .foregroundColor(.primary)
-                                        .frame(minWidth: 80, alignment: .leading) // 최소 너비 설정
-                                    
+                                    Text("DAY \(day)")
+                                        .fontWeight(.medium)
                                     Spacer()
-                                    
-                                    Text("\(item.price, specifier: "%.0f")원")
-                                        .font(.body)
+                                    Text("\(groupedExpenses[day] ?? 0, specifier: "%.0f")원")
                                         .fontWeight(.bold)
-                                        .foregroundColor(.primary)
                                 }
-                                .padding(.vertical, 5) // 위아래 여백 추가
+                            }
+                            .buttonStyle(PlainButtonStyle()) // 기본 버튼 스타일 제거
+                            
+                            // 🔽 Section이 펼쳐졌을 때 상세 내용 표시
+                            if expandedDays.contains(day) {
+                                let filteredList = expenses.filter {$0.day == day}
                                 
-                                Divider() // 구분선 추가
+                                VStack {
+                                    ForEach(filteredList, id: \.id) { item in
+                                        HStack {
+                                            Text((ExpenseCategoryType.from(item.category)?.icon ?? "") + " " + item.category) // 아이콘이 있다면 여기에 추가 가능
+                                                .font(.body)
+                                                .foregroundColor(.primary)
+                                                .frame(minWidth: 80, alignment: .leading) // 최소 너비 설정
+                                            
+                                            Spacer()
+                                            
+                                            Text("\(item.price, specifier: "%.0f")원")
+                                                .font(.system(size: 14))
+                                                .fontWeight(.regular)
+                                                .foregroundColor(.primary)
+                                            
+                                        }
+                                        .padding(.vertical, 5) // 위아래 여백 추가
+                                        
+                                        Divider() // 구분선 추가
+                                    }
+                                    Button(action: {
+                                        
+                                    }) {
+                                        Text("추가하기")
+                                            .fontWeight(.bold)
+                                            .tint(.primaryBlue)
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    
+                                }
                             }
                         }
                     }
+                    
+                    // 총 지출 섹션
+                    Section {
+                        HStack {
+                            Text("총 지출")
+                                .font(.headline)
+                            Spacer()
+                            Text("\(totalExpense, specifier: "%.0f")원")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.primaryOrange)
+                        }
+                        .padding(.vertical, 5)
+                    }
                 }
-            }
-            
-            // 총 지출 섹션
-            Section {
-                HStack {
-                    Text("총 지출")
-                        .font(.headline)
-                    Spacer()
-                    Text("\(totalExpense, specifier: "%.0f")원")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primaryOrange)
-                }
-                .padding(.vertical, 5)
             }
         }
         .onAppear {
             dbManager = DBManager(modelContext: modelContext)
+            
+            fetchTravelData()
             
             getAllExpenses()
         }
@@ -145,6 +147,15 @@ struct DailyExpenseListView: View {
     private func getAllExpenses() {
         if let expenseList = dbManager?.fetchExpenses() {
             expenses = expenseList
+        }
+    }
+    
+    private func fetchTravelData() {
+        dbManager = DBManager(modelContext: modelContext)
+        
+        if let firstTravel = dbManager?.fetchTravel().first {
+            period = firstTravel.period
+            isLoading = false
         }
     }
     
