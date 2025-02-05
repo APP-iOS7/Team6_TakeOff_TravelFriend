@@ -4,6 +4,8 @@
 //
 //  Created by 박세라 on 2/4/25.
 //
+//  여행 모델
+
 import Foundation
 import SwiftData
 

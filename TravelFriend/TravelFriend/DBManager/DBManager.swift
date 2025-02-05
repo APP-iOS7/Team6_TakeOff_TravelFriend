@@ -15,21 +15,42 @@ class DBManager {
         self.modelContext = modelContext
     }
     
-    /// 데이터 추가
-    func addItem(_ item: Travel) {
-        modelContext.insert(item)
+    /// 데이터 추카
+    func addItem(_ item: Any) {
+        
+        if let item = item as? Travel {
+            modelContext.insert(item)
+        }
+        
+        if let spendItem = item as? DailyExpense {
+            modelContext.insert(spendItem)
+        }
+        
         saveContext()
     }
     
     /// 데이터 삭제
-    func deleteItem(_ item: Travel) {
-        modelContext.delete(item)
+    func deleteItem(_ item: Any) {
+        if let item = item as? Travel {
+            modelContext.delete(item)
+        }
+        
+        if let spendItem = item as? DailyExpense {
+            modelContext.delete(spendItem)
+        }
+        
         saveContext()
     }
     
-    /// 모든 데이터 가져오기
+    /// 여행 데이터 가져오기
     func fetchTravel() -> [Travel] {
         let descriptor = FetchDescriptor<Travel>()
+        return (try? modelContext.fetch(descriptor)) ?? []
+    }
+    
+    /// 지출 데이터 가져오기
+    func fetchExpenses() -> [DailyExpense] {
+        let descriptor = FetchDescriptor<DailyExpense>()
         return (try? modelContext.fetch(descriptor)) ?? []
     }
     
@@ -40,6 +61,7 @@ class DBManager {
         return (try? modelContext.fetch(descriptor)) ?? []
     }
      */
+    
 
     /// 데이터 저장
     private func saveContext() {
