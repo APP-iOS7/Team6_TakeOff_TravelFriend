@@ -15,9 +15,9 @@ class NetWorkManager<Model: Decodable> {
     private func requestHttp(
         model: Model.Type,
         urlString: String,
-        method: String,  // HTTP 메서드 (GET, POST, PUT, DELETE)
-        headers: [(headerValue: String, headerField: String?)] = [], // HTTP 헤더
-        body: Data? = nil  // POST/PUT 요청 시 body 추가
+        method: String,
+        headers: [(headerValue: String, headerField: String?)] = [],
+        body: Data? = nil
     ) async throws -> Model {
         
         guard let url = URL(string: urlString) else {
@@ -25,30 +25,38 @@ class NetWorkManager<Model: Decodable> {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = method  // ✅ HTTP 메서드 설정
+        request.httpMethod = method
         
-        // ✅ 헤더 추가
         for header in headers {
             if let field = header.headerField {
                 request.addValue(header.headerValue, forHTTPHeaderField: field)
             }
         }
         
-        // ✅ POST/PUT 요청 시 body 설정
         if let body = body, method == "POST" || method == "PUT" {
             request.httpBody = body
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type") // JSON 요청 기본 추가
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         }
+        
+        printRequest(request)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            throw URLError(.badServerResponse)
+        if let httpResponse = response as? HTTPURLResponse {
+            print("📡 HTTP 응답 상태 코드: \(httpResponse.statusCode)")
+            
+            if httpResponse.statusCode != 200 {
+                let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
+                print("❌ 서버 응답 오류: \(errorMessage) (상태 코드: \(httpResponse.statusCode))")
+                
+                throw NSError(domain: "OpenAI API", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])
+            }
         }
         
         return try JSONDecoder().decode(Model.self, from: data)
     }
 }
+
 
 // MARK: - NetWorkManager 확장 (기본 HTTP 메서드 지원)
 extension NetWorkManager {
@@ -77,61 +85,56 @@ extension NetWorkManager {
 // MARK: - OpenAI API 요청 확장
 extension NetWorkManager where Model == OpenAIResponse {
     
-    /// OpenAI API 요청을 수행하는 메서드
+    /// OpenAI API 요청을 수행하는 메서드 (에러 코드 반환 포함)
     func requestGPT4(prompt: String) async throws -> String {
         let apiKey = ProcessInfo.processInfo.environment["OPENAI_API_KEY"] ?? ""
         let url = "https://api.openai.com/v1/chat/completions"
+        print("🔹 현재 API 키: \(apiKey.isEmpty ? "키 없음" : "키 설정됨")")
+        print(apiKey)
 
         let requestBody = OpenAIRequest(
             model: "gpt-4o",
             messages: [
-                ["role": "system", "content": "You are a helpful assistant."],
-                ["role": "user", "content": prompt]
-            ]
+                        OpenAIRequest.Message(role: "system", content: "You are a helpful assistant."),
+                        OpenAIRequest.Message(role: "user", content: prompt)
+                    ]
         )
+        //print("✅ 요청 모델: \(requestBody.model)")  // 요청 모델 확인 (디버깅)
+
 
         let bodyData = try JSONEncoder().encode(requestBody)
+        print("📡 OpenAI 요청 본문:")
+           if let requestJSON = String(data: bodyData, encoding: .utf8) {
+               print(requestJSON) // ✅ 요청 본문 확인 (디버깅)
+           }
 
-        let response = try await requestHttp(
-            model: OpenAIResponse.self,
-            urlString: url,
-            method: "POST",
-            headers: [
-                ("Bearer \(apiKey)", "Authorization"),
-                ("application/json", "Content-Type")
-            ],
-            body: bodyData
-        )
+        do {
+            let response = try await requestHttp(
+                model: OpenAIResponse.self,
+                urlString: url,
+                method: "POST",
+                headers: [
+                    ("Bearer \(apiKey)", "Authorization")
+                ],
+                body: bodyData
+            )
 
-        return response.choices.first?.message.content ?? "No response"
-    }
-}
-
-// MARK: - OpenAI API 모델 정의
-struct OpenAIRequest: Codable {
-    let model: String
-    let messages: [[String: String]]
-}
-
-struct OpenAIResponse: Codable {
-    let choices: [Choice]
-    
-    struct Choice: Codable {
-        let message: Message
-        
-        struct Message: Codable {
-            let content: String
+            return response.choices.first?.message.content ?? "No response"
+        } catch let error as URLError {
+            print("❌ 네트워크 오류 발생: \(error.localizedDescription) (코드: \(error.code.rawValue))")
+            throw error // 네트워크 오류 그대로 반환
+        } catch let error as NSError {
+            print("❌ 일반 오류 발생: \(error.localizedDescription) (도메인: \(error.domain), 코드: \(error.code))")
+            throw error // NSError 오류 그대로 반환
+        } catch {
+            print("❌ 알 수 없는 오류 발생: \(error.localizedDescription)")
+            throw error // 알 수 없는 오류 반환
         }
     }
 }
 
-struct OpenAIErrorResponse: Codable {
-    let error: OpenAIError
-    
-    struct OpenAIError: Codable {
-        let message: String
-    }
-}
+
+
 
 // ✅ 사용 예시
 // Task {
@@ -144,3 +147,15 @@ struct OpenAIErrorResponse: Codable {
 //     }
 // }
 
+func printRequest(_ request: URLRequest) {
+    print("✅ [디버깅] URLRequest 확인")
+    print("- URL: \(request.url?.absoluteString ?? "URL 없음")")
+    print("- HTTP Method: \(request.httpMethod ?? "메서드 없음")")
+    print("- Headers: \(request.allHTTPHeaderFields ?? [:])")
+
+    if let body = request.httpBody, let bodyString = String(data: body, encoding: .utf8) {
+        print("- Body:\n\(bodyString)")
+    } else {
+        print("- Body: 없음")
+    }
+}
