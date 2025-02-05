@@ -12,7 +12,6 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var dbManager: DBManager?
-    @State private var isLoading: Bool = false
     @State private var selectedTab: Int = 0
     
     @State private var navigateToExchange: Bool = false     // 환율화면 네비게이션 상태 관리
