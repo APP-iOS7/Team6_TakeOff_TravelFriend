@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreMotion
 
 struct ExchangeView: View {
     var body: some View {
