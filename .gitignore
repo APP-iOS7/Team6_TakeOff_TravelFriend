@@ -64,3 +64,5 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output 
+TravelFriend/TravelFriend/.env
+TravelFriend/TravelFriend.xcodeproj/xcshareddata/xcschemes/TravelFriend.xcscheme
