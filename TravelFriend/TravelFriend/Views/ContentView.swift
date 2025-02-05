@@ -69,7 +69,7 @@ struct ContentView: View {
                 }
             }
             .navigationDestination(isPresented: $navigateToExchange) {
-                ExchangeView() // ExchangeView로 이동
+                ExchangeView(location: travelItem?.location ?? "미국") // ExchangeView로 이동
             }
             .navigationDestination(isPresented: $navigateToAddTravel) {
                 AddTravelView() // ExchangeView로 이동
