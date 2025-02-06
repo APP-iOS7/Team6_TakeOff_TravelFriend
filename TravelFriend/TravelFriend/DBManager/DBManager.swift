@@ -54,13 +54,28 @@ class DBManager {
         return (try? modelContext.fetch(descriptor)) ?? []
     }
     
-    /// 특정 조건으로 데이터 가져오기
-    /*
-    func fetchTravels(withName name: String) -> [Travel] {
-        let descriptor = FetchDescriptor<Item>(predicate: #Predicate { $0. == name })
+    /// 일별로 지출 데이터 가져오기
+    func fetchDailyExpenses(withday day: Int) -> [DailyExpense] {
+        let descriptor = FetchDescriptor<DailyExpense>(predicate: #Predicate { $0.day == day })
         return (try? modelContext.fetch(descriptor)) ?? []
     }
-     */
+    
+    /// 데이터 추가 또는 업데이트 (Upsert)
+    func upsertDailyExpense(_ expense: DailyExpense) {
+        // 같은 day의 데이터를 가져옴
+        let expenses = fetchDailyExpenses(withday: expense.day)
+        
+        // 같은 category가 있는지 확인
+        if let existingExpenseIndex = expenses.firstIndex(where: { $0.category == expense.category }) {
+            // 기존 데이터가 있으면 price만 업데이트
+            expenses[existingExpenseIndex].price = expense.price
+        } else {
+            // 기존 데이터가 없으면 새로 추가
+            modelContext.insert(expense)
+        }
+        
+        saveContext()
+    }
     
 
     /// 데이터 저장
