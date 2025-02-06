@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ChatBotView: View {
-    let networkManager = NetWorkManager<OpenAIResponse>()
     var country: String
     @State var location: String = ""
     @State var isAnswerIsGenerating: Bool = false // 응답 생성 중인지
@@ -184,7 +183,6 @@ struct LocationSugestionView : View {
     
     var columns: [GridItem] = [GridItem(.adaptive(minimum: 100))]
     var locationList: [String] = ["일반" ,"인사말", "사과", "식당", "화장실", "길묻기"] + Array(locationListSample.shuffled().prefix(9))
-    
     var body: some View {
         VStack {
             LazyVGrid(columns: columns) {
