@@ -62,8 +62,8 @@ struct DailyExpenseListView: View {
     @State private var showDailySpendingEditView: Bool = false
     @State private var isLoading: Bool = true // ✅ 로딩 상태 추가
     
-    @State private var categoryAmount: [ExpenseCategoryType: String] = [:]
-    @State private var isEditing: [ExpenseCategoryType: Bool] = [:] // 편집 여부 저장
+    @State private var categoryAmount: [Int: [ExpenseCategoryType: String]] = [:] // 날짜별로 카테고리 금액 저장
+    @State private var isEditing: [Int: [ExpenseCategoryType: Bool]] = [:] // 날짜별 편집 여부 저장
     
     @State private var expenses: [DailyExpense] = []
     
@@ -122,11 +122,13 @@ struct DailyExpenseListView: View {
                                             
                                             Spacer()
                                             
-                                            if isEditing[categoryType] == true {
+                                            if isEditing[day]?[categoryType] == true {
                                                 // ✅ TextField 모드
                                                 TextField("0원", text: Binding(
-                                                    get: { categoryAmount[categoryType] ?? "\(totalPrice)" },
-                                                    set: { newValue in categoryAmount[categoryType] = newValue }
+                                                    get: { categoryAmount[day]?[categoryType] ?? "\(totalPrice)" },
+                                                    set: { newValue in
+                                                        categoryAmount[day, default: [:]][categoryType] = newValue
+                                                    }
                                                 ))
                                                 .keyboardType(.numberPad) // 숫자 키보드 사용
                                                 .multilineTextAlignment(.trailing) // 오른쪽 정렬
@@ -134,10 +136,10 @@ struct DailyExpenseListView: View {
                                                 .fontWeight(.bold)
                                                 .frame(minWidth: 60, alignment: .trailing)
                                                 .onSubmit {
-                                                    isEditing[categoryType] = false // ✅ 입력 완료 후 Text로 변경
+                                                    isEditing[day]?[categoryType] = false // ✅ 입력 완료 후 Text로 변경
                                                 }
                                                 .onAppear {
-                                                    categoryAmount[categoryType] = "" // ✅ TextField가 나타날 때 기존 값 설정
+                                                    categoryAmount[day, default: [:]][categoryType] = "" // ✅ TextField가 나타날 때 기존 값 설정
                                                 }
                                             } else {
                                                 Text("\(totalPrice, specifier: "%.0f")원")
@@ -145,7 +147,7 @@ struct DailyExpenseListView: View {
                                                     .fontWeight(.bold)
                                                     .foregroundColor(totalPrice > 0 ? .primary : .secondary) // 금액이 없으면 흐리게 처리
                                                     .onTapGesture {
-                                                        isEditing[categoryType] = true // ✅ 클릭하면 TextField로 변경
+                                                        isEditing[day, default: [:]][categoryType] = true // ✅ 클릭하면 TextField로 변경
                                                     }
                                             }
                                             
@@ -155,7 +157,7 @@ struct DailyExpenseListView: View {
                                         Divider() // 구분선 추가
                                     }
                                     Button(action: {
-                                        upsertList = categoryAmount.compactMap { category, priceString in
+                                        upsertList = categoryAmount[day, default: [:]].compactMap { category, priceString in
                                             guard let price = Double(priceString) else { return nil } // 숫자로 변환 실패 시 제외
                                             return DailyExpense(day: day, category: category.rawValue, price: price)
                                         }
