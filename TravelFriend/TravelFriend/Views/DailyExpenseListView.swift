@@ -40,11 +40,17 @@ struct DailyExpenseListView: View {
     
     @State private var period: Int = 0
     
+    @State private var showDailySpendingEditView: Bool = false
     @State private var isLoading: Bool = true // ✅ 로딩 상태 추가
+    
+    @State private var categoryAmount: [ExpenseCategoryType: String] = [:]
+    @State private var isEditing: [ExpenseCategoryType: Bool] = [:] // 편집 여부 저장
     
     @State private var expenses: [DailyExpense] = []
     
     @State private var expandedDays: Set<Int> = [] // 펼쳐진 날짜 목록 (Set 사용)
+    
+    @State private var upsertList: [DailyExpense] = []
     
     // 일자별 총 지출 계산
     var groupedExpenses: [Int: Double] {
@@ -80,22 +86,50 @@ struct DailyExpenseListView: View {
                             
                             // 🔽 Section이 펼쳐졌을 때 상세 내용 표시
                             if expandedDays.contains(day) {
-                                let filteredList = expenses.filter {$0.day == day}
+                                let filteredList = expenses.filter { $0.day == day }
                                 
                                 VStack {
-                                    ForEach(filteredList, id: \.id) { item in
+                                    ForEach(ExpenseCategoryType.allCases, id: \.self) { categoryType in
+                                        let totalPrice = filteredList
+                                            .filter { $0.category == categoryType.rawValue }
+                                            .map { $0.price }
+                                            .reduce(0, +) // 같은 카테고리의 가격을 합산
+                                        
                                         HStack {
-                                            Text((ExpenseCategoryType.from(item.category)?.icon ?? "") + " " + item.category) // 아이콘이 있다면 여기에 추가 가능
+                                            Text((categoryType.icon) + " " + categoryType.rawValue)
                                                 .font(.body)
                                                 .foregroundColor(.primary)
                                                 .frame(minWidth: 80, alignment: .leading) // 최소 너비 설정
                                             
                                             Spacer()
                                             
-                                            Text("\(item.price, specifier: "%.0f")원")
+                                            if isEditing[categoryType] == true {
+                                                // ✅ TextField 모드
+                                                TextField("0원", text: Binding(
+                                                    get: { categoryAmount[categoryType] ?? "\(totalPrice)" },
+                                                    set: { newValue in categoryAmount[categoryType] = newValue }
+                                                ))
+                                                .keyboardType(.numberPad) // 숫자 키보드 사용
+                                                .multilineTextAlignment(.trailing) // 오른쪽 정렬
                                                 .font(.system(size: 14))
-                                                .fontWeight(.regular)
-                                                .foregroundColor(.primary)
+                                                .fontWeight(.bold)
+                                                .frame(minWidth: 60, alignment: .trailing)
+                                                .onSubmit {
+                                                    // updateExpense(for: categoryType)
+                                                    isEditing[categoryType] = false // ✅ 입력 완료 후 Text로 변경
+                                                }
+                                                .onAppear {
+                                                    categoryAmount[categoryType] = "" // ✅ TextField가 나타날 때 기존 값 설정
+                                                }
+                                            } else {
+                                                Text("\(totalPrice, specifier: "%.0f")원")
+                                                    .font(.system(size: 14))
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(totalPrice > 0 ? .primary : .secondary) // 금액이 없으면 흐리게 처리
+                                                    .onTapGesture {
+                                                        isEditing[categoryType] = true // ✅ 클릭하면 TextField로 변경
+                                                    }
+                                            }
                                             
                                         }
                                         .padding(.vertical, 5) // 위아래 여백 추가
@@ -103,9 +137,15 @@ struct DailyExpenseListView: View {
                                         Divider() // 구분선 추가
                                     }
                                     Button(action: {
+                                        upsertList = categoryAmount.compactMap { category, priceString in
+                                            guard let price = Double(priceString) else { return nil } // 숫자로 변환 실패 시 제외
+                                            return DailyExpense(day: day, category: category.rawValue, price: price)
+                                        }
                                         
+                                        // 업데이트와 생성
+                                        upsertDailyExpense(upsertList)
                                     }) {
-                                        Text("추가하기")
+                                        Text("수정하기")
                                             .fontWeight(.bold)
                                             .tint(.primaryBlue)
                                     }
@@ -132,6 +172,9 @@ struct DailyExpenseListView: View {
                 }
             }
         }
+        .sheet(isPresented: $showDailySpendingEditView) {
+            EditDailySpendingView()
+        }
         .onAppear {
             dbManager = DBManager(modelContext: modelContext)
             
@@ -157,6 +200,19 @@ struct DailyExpenseListView: View {
             period = firstTravel.period
             isLoading = false
         }
+    }
+    
+    private func upsertDailyExpense(_ expenses: [DailyExpense]) {
+        for expense in expenses {
+            dbManager?.upsertDailyExpense(expense)
+        }
+        
+        // 화면 갱신
+        getAllExpenses()
+        
+        // 수정된 값들 초기화
+        isEditing = [:]
+        categoryAmount = [:]
     }
     
     // ✅ Section 토글 함수
