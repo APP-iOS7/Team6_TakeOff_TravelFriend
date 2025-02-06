@@ -94,6 +94,8 @@ struct ContentView: View {
         
         if let firstTravel = dbManager?.fetchTravel().first {
             travelItem = firstTravel
+        } else {
+            travelItem = nil
         }
     }
 }
