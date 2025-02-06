@@ -40,21 +40,34 @@ struct ChatBotView: View {
                         LocationSugestionView(location: $location, isButtonShowing: $isButtonShowing, requestGPT: requestGPT)
                             .padding()
                     }
-                    TextField("어떤 장소에 있나요?", text: $location)
-                        .padding()
-                        .border(.primaryOrange, width: 3)
-                        .background(.primaryBlue)
-                        .foregroundStyle(.white)
-                        .focused($isTextFieldFocused)
-                        .onSubmit { requestGPT() } // ✅ Enter(완료) 입력 시 실행
-                        .onTapGesture {
-                            isButtonShowing = true // ✅ TextField 터치 시 버튼 보이게 하기
-                        }
-                        .onChange(of: isTextFieldFocused) { oldValue, newValue in
-                            if newValue {
-                                isButtonShowing = true
+                    HStack {
+                        TextField("어떤 장소에 있나요?", text: $location)
+                            .padding(10)
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color("PrimaryBlue"))) // 배경색 추가
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color("PrimaryOrange"), lineWidth: 3))
+                            .padding(.horizontal, 5)
+                            .padding(.top, 5)
+                            .foregroundStyle(.white)
+                            .focused($isTextFieldFocused)
+                            .onSubmit { requestGPT() } // ✅ Enter(완료) 입력 시 실행
+                            .onTapGesture {
+                                isButtonShowing = true // ✅ TextField 터치 시 버튼 보이게 하기
                             }
-                        }
+                            .onChange(of: isTextFieldFocused) { oldValue, newValue in
+                                if newValue {
+                                    isButtonShowing = true
+                                }
+                            }
+                        
+                        Text(flagMap[country] ?? defaultFlag)
+                            .onAppear() {
+                                print(location)
+                                print(flagMap[location] ?? defaultFlag)
+                            }
+                    }
+                    .padding(.horizontal)
+                    .background(.primaryBlue)
+                 
                         
                 }
                 
