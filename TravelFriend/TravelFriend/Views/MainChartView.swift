@@ -6,72 +6,54 @@
 //
 
 import SwiftUI
+import Charts
+
 
 struct MainChartView: View {
-    struct CategoryData {
-        let name: String
-        let value: CGFloat
-        let color: Color
-    }
+    @Environment(\.modelContext) private var modelContext
+    @State var dailyExpenses: [DailyExpense]
+    @State private var dbManager: DBManager?
     
-    struct BarData {
-        let totalValue: CGFloat
-        let categories: [CategoryData]
-    }
-    
-    let barData: [BarData] = [
-        BarData(totalValue: 100, categories: [
-            CategoryData(name: "식비", value: 40, color: .red),
-            CategoryData(name: "교통", value: 30, color: .blue),
-            CategoryData(name: "숙박", value: 30, color: .green)
-        ]),
-        BarData(totalValue: 150, categories: [
-            CategoryData(name: "식비", value: 50, color: .red),
-            CategoryData(name: "교통", value: 50, color: .blue),
-            CategoryData(name: "숙박", value: 50, color: .green)
-        ]),
-        BarData(totalValue: 200, categories: [
-            CategoryData(name: "식비", value: 80, color: .red),
-            CategoryData(name: "교통", value: 60, color: .blue),
-            CategoryData(name: "숙박", value: 60, color: .green)
-        ])
-    ]
-    
-    var body: some View {
-        ScrollView(.horizontal) {
-            HStack(alignment: .bottom, spacing: 16) {
-                Spacer()
-                ForEach(barData.indices, id: \.self) { index in
-                    let bar = barData[index]
-                    
-                    VStack {
-                        ZStack(alignment: .bottom) {
-                            Rectangle()
-                                .fill(Color.gray.opacity(0.2)) // 막대 배경
-                                .frame(width: 40, height: 200)
-                            
-                            VStack(spacing: 0) {
-                                ForEach(bar.categories.indices, id: \.self) { catIndex in
-                                    let category = bar.categories[catIndex]
-                                    Rectangle()
-                                        .fill(category.color)
-                                        .frame(width: 40, height: (category.value / bar.totalValue) * 200) // 비율 계산
-                                }
-                            }
-                        }
-                        Text("\(Int(bar.totalValue))") // 총합 표시
-                            .font(.caption)
-                    }
-                    .frame(width: 150)
-                }
-                Spacer()
-            }
-            .padding()
+    private func fetchDailyExpenses() {
+        dbManager = DBManager(modelContext: modelContext)
+        
+        if let expenses = dbManager?.fetchExpenses() {
+            dailyExpenses = expenses
         }
     }
+    
+    
+    let sampleExpenses: [DailyExpense] = [
+        DailyExpense(day: 1, category: "Food", price: 12.5),
+        DailyExpense(day: 1, category: "Transport", price: 8.0),
+        DailyExpense(day: 1, category: "Entertainment", price: 15.0),
+        DailyExpense(day: 2, category: "Groceries", price: 30.0),
+        DailyExpense(day: 2, category: "Utilities", price: 50.0),
+        DailyExpense(day: 2, category: "Shopping", price: 25.0),
+        DailyExpense(day: 3, category: "Food", price: 18.0),
+        DailyExpense(day: 3, category: "Transport", price: 7.5),
+        DailyExpense(day: 3, category: "Healthcare", price: 40.0),
+        DailyExpense(day: 3, category: "Entertainment", price: 20.0),
+        DailyExpense(day: 4, category: "Transport", price: 7.5),
+        DailyExpense(day: 4, category: "Healthcare", price: 40.0),
+        DailyExpense(day: 4, category: "Entertainment", price: 20.0)
+    ]
+    var body: some View {
+        Chart {
+            ForEach(dailyExpenses) { expense in
+                BarMark(
+                    x: .value("여행 일자", "\(expense.day)일차 여행"), // 어느 위치에 막대그래프를 쌓을 건가
+                    y: .value("총 비용합", expense.price) // 값은 어떻게 매길 건가
+                )
+                .foregroundStyle(by: .value("Shape Color", expense.category)) // <- 색상 값
+            }
+        }
+        .frame(height: 300)
+        .onAppear(perform: self.fetchDailyExpenses)
+        
+    }
 }
 
-
-#Preview {
-    MainChartView()
-}
+//#Preview {
+//    MainChartView()
+//}
