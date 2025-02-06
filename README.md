@@ -29,3 +29,12 @@
    ```bash
    git clone https://github.com/[your-repo]/Team6_TakeOff_TravelFriend.git
    cd TravelFriend
+
+
+
+
+## 뷰 살펴보기
+
+![image](https://github.com/user-attachments/assets/f2844a35-2aef-4b33-9c08-10c8acef665c)
+
+
