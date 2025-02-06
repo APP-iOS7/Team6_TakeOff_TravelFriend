@@ -12,7 +12,6 @@ import SwiftData
 struct TravelFriendApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
             Travel.self,
             DailyExpense.self,
         ])

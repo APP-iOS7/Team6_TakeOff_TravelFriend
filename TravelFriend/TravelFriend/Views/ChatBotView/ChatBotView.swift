@@ -239,8 +239,6 @@ fileprivate func requestGPT4(prompt: String) async throws -> String {
     
     request.httpBody = try JSONEncoder().encode(requestBody)
     
-    printRequest(request)
-    
     let (data, _) = try await URLSession.shared.data(for: request)
     
     // ✅ JSON 응답을 사람이 읽을 수 있도록 출력
