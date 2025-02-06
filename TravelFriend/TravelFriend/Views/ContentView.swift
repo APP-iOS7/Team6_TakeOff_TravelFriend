@@ -73,17 +73,18 @@ struct ContentView: View {
                         }
                         .tint(.primaryBlue)
                     }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: { navigateToExpenseList = true }) {
-                            Image(systemName: "list.triangle")
-                        }
-                        .tint(.primaryBlue)
-                    }
                     // 툴바 우측 여행등록 화면 이동 버튼 (등록시에는 invisible)
                     if travelItem == nil {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button(action: { navigateToAddTravel = true }) {
                                 Image(systemName: "plus")
+                            }
+                            .tint(.primaryBlue)
+                        }
+                    } else {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: { navigateToExpenseList = true }) {
+                                Image(systemName: "list.triangle")
                             }
                             .tint(.primaryBlue)
                         }
