@@ -31,7 +31,7 @@ struct MainChartView: View {
                     y: .value("총 비용합", expense.price),
                     width: .fixed(30) // 막대 너비 고정
                 )
-                .foregroundStyle(by: .value("Shape Color", expense.category))
+                .foregroundStyle(ExpenseCategoryType.from(expense.category)?.color ?? Color.primaryBlack)
             }
         }
         .chartXVisibleDomain(length: 5)
