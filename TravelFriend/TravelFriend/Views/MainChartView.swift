@@ -23,10 +23,15 @@ struct MainChartView: View {
             })
         }
     }
+    
     var body: some View {
         
         if dailyExpenses.isEmpty {
             MainChartEmptyView()
+                .onAppear(perform: {
+                self.fetchDailyExpenses()
+                print(dailyExpenses)
+            })
         } else {
             Chart {
                 ForEach(dailyExpenses) { expense in
@@ -41,7 +46,10 @@ struct MainChartView: View {
             .chartXVisibleDomain(length: 5)
             .chartScrollableAxes(.horizontal)
             .frame(height: 300)
-            .onAppear(perform: self.fetchDailyExpenses)
+            .onAppear(perform: {
+                self.fetchDailyExpenses()
+                print(dailyExpenses)
+            })
         }
     }
 }
