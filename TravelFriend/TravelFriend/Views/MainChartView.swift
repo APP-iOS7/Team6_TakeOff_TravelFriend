@@ -35,7 +35,7 @@ struct MainChartView: View {
         .chartXVisibleDomain(length: 1)
         .chartScrollableAxes(getCntOfDays() >= 10 ? .horizontal : [])
         .frame(height: 300)
-bb        .onAppear(perform: self.fetchDailyExpenses)
+        .onAppear(perform: self.fetchDailyExpenses)
         
     }
 }
