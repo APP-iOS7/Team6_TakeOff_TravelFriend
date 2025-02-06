@@ -43,6 +43,8 @@ struct ContentView: View {
             }
             .onAppear {
                 fetchTravelData()
+                let gyroManager = GyroManager.shared
+                gyroManager.setLocationText(travelItem?.location ?? "유럽")
             }
             .toolbar {
                 // 툴바 좌측 환율 화면 이동 버튼
