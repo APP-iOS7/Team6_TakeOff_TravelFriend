@@ -249,6 +249,6 @@ struct RoundedTextFieldStyle: TextFieldStyle {
     }
 }
 
-#Preview {
-    ExchangeView(location: "일본")
-}
+//#Preview {
+//    ExchangeView(location: "일본")
+//}
