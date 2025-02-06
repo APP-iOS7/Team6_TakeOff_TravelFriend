@@ -27,31 +27,38 @@ struct ChatBotView: View {
                         Text(answer)
                     }
                     .padding()
-                    .background(.primarySkyblue)
+                    .onTapGesture {
+                        isButtonShowing.toggle()
+                    }
                     
                 }
                 Spacer()
                 
-                // 버튼 선택하면 사라져야함
-                if isButtonShowing {
-                    LocationSugestionView(location: $location, isButtonShowing: $isButtonShowing, requestGPT: requestGPT)
-                }
-                TextField("어떤 장소에 있나요?", text: $location)
-                    .padding()
-                    .background(.primaryBlue)
-                    .focused($isTextFieldFocused)
-                    .onSubmit { requestGPT() } // ✅ Enter(완료) 입력 시 실행
-                    .onTapGesture {
-                        isButtonShowing = true // ✅ TextField 터치 시 버튼 보이게 하기
+                VStack {
+                    // 버튼 선택하면 사라져야함
+                    if isButtonShowing {
+                        LocationSugestionView(location: $location, isButtonShowing: $isButtonShowing, requestGPT: requestGPT)
+                            .padding()
                     }
-                    .onChange(of: isTextFieldFocused) { oldValue, newValue in
-                        if newValue {
-                            isButtonShowing = true
+                    TextField("어떤 장소에 있나요?", text: $location)
+                        .padding()
+                        .border(.primaryOrange, width: 3)
+                        .background(.primaryBlue)
+                        .foregroundStyle(.white)
+                        .focused($isTextFieldFocused)
+                        .onSubmit { requestGPT() } // ✅ Enter(완료) 입력 시 실행
+                        .onTapGesture {
+                            isButtonShowing = true // ✅ TextField 터치 시 버튼 보이게 하기
                         }
-                    }
+                        .onChange(of: isTextFieldFocused) { oldValue, newValue in
+                            if newValue {
+                                isButtonShowing = true
+                            }
+                        }
+                        
+                }
+                
             }
-            .background(.primarySkyblue)
-            
             //
             if isAnswerIsGenerating {
                 Spacer()
@@ -61,6 +68,7 @@ struct ChatBotView: View {
                 Spacer()
             }
         }
+        .background(.primarySkyblue)
         
         
     }
@@ -88,7 +96,7 @@ extension ChatBotView {
     }
     func makePrompt()-> String {
         return """
-        \(location)에서 사용하는 \(self.country)어 회화 표현을 알려줘. 첫 줄에는 한국어 의미, 둘째 줄에는 \(country)어 원어 표기, 셋째 줄에는 \(country)어의 한국어 발음 표시로 제시해주고 총 15개 이상 표현을 제시해줘 형식은 아래와 같아 ### ✅ **와인샵에서 사용하는 일본어 회화 표현 (한국어 - 일본어 - 발음)**
+        \(location)상황에서 사용하는 \(self.country)어 회화 표현을 알려줘. 첫 줄에는 한국어 의미, 둘째 줄에는 \(country)어 원어 표기, 셋째 줄에는 \(country)어의 한국어 발음 표시로 제시해주고 총 15개 이상 표현을 제시해줘 형식은 아래와 같아 ### ✅ **와인샵에서 사용하는 일본어 회화 표현 (한국어 - 일본어 - 발음)**
         
         1. **이 와인은 어떤 맛인가요?**
            - このワインはどんな味ですか？
@@ -162,11 +170,7 @@ struct LocationSugestionView : View {
     var requestGPT: () -> Void // ✅ 함수 전달
     
     var columns: [GridItem] = [GridItem(.adaptive(minimum: 100))]
-    var locationList: [String] = [
-        "식당", "카페", "술집", "랜드마크", "박물관",
-        "유적지", "쇼핑몰", "시장", "기차역", "버스정류장",
-        "공항", "호텔", "극장", "티켓판매소", "병원"
-    ]
+    var locationList: [String] = ["일반" ,"인사말", "사과", "식당", "화장실", "길묻기"] + Array(locationListSample.shuffled().prefix(9))
     
     var body: some View {
         VStack {
@@ -199,6 +203,7 @@ struct LocationButton: View {
                 .background(.primaryOrange)
                 .foregroundColor(.white)
                 .clipShape(.rect(cornerRadius: 5))
+                .shadow(radius: 3.0)
         }
         
     }
@@ -241,6 +246,11 @@ fileprivate func requestGPT4(prompt: String) async throws -> String {
     let response = try JSONDecoder().decode(OpenAIResponse.self, from: data)
     return response.choices.first?.message.content ?? "No response"
 }
+
+
+
+
+
 #Preview {
-    ChatBotView(country: "중국")
+    ChatBotView(country: "일본")
 }
