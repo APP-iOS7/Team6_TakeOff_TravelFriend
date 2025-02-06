@@ -115,7 +115,6 @@ struct DailyExpenseListView: View {
                                                 .fontWeight(.bold)
                                                 .frame(minWidth: 60, alignment: .trailing)
                                                 .onSubmit {
-                                                    // updateExpense(for: categoryType)
                                                     isEditing[categoryType] = false // ✅ 입력 완료 후 Text로 변경
                                                 }
                                                 .onAppear {
