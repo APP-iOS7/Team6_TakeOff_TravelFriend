@@ -35,6 +35,18 @@
 
 ## 뷰 살펴보기
 
-![image](https://github.com/user-attachments/assets/f2844a35-2aef-4b33-9c08-10c8acef665c)
+
+
+### ChatBotView
+
+
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| ![스크린샷 2025-02-07 오전 8 39 33](https://github.com/user-attachments/assets/cc4ef30e-dfd1-4100-8e75-0d2a31682071) | ![스크린샷 2025-02-07 오전 8 39 48](https://github.com/user-attachments/assets/2da06ea3-cea4-42ef-b29f-3fda5ce1eaa1) | ![스크린샷 2025-02-07 오전 8 40 17](https://github.com/user-attachments/assets/e4435f91-5040-493a-a958-b73586634f03) |
+| 챗봇 뷰 기본 화면 | 검색 중 표출 화면 | 결과 출력 |
+
+
+
+
 
 
