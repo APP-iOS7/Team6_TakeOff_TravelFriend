@@ -63,7 +63,7 @@ struct ContentView: View {
                 .onAppear {
                     fetchTravelData()
                     let gyroManager = GyroManager.shared
-                    gyroManager.setLocationText(travelItem?.location ?? "유럽")
+                    gyroManager.setLocationText(travelItem?.location ?? "")
                 }
                 .toolbar {
                     // 툴바 좌측 환율 화면 이동 버튼
@@ -91,7 +91,7 @@ struct ContentView: View {
                     }
                 }
                 .navigationDestination(isPresented: $navigateToExchange) {
-                    ExchangeView(location: travelItem?.location ?? "미국") // ExchangeView로 이동
+                    ExchangeView(location: travelItem?.location ?? "") // ExchangeView로 이동
                 }
                 .navigationDestination(isPresented: $navigateToAddTravel) {
                     AddTravelView() // ExchangeView로 이동
