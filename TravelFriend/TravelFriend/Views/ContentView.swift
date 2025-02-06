@@ -14,6 +14,8 @@ struct ContentView: View {
     @State private var dbManager: DBManager?
     @State private var selectedTab: Int = 0
     
+    @State private var shouldRefresh = false
+    
     @State private var navigateToExchange: Bool = false     // 환율화면 네비게이션 상태 관리
     @State private var navigateToAddTravel: Bool = false    // 여행추가 네비게이션 상태 관리
     @State private var navigateToExpenseList: Bool = false  // 지출조회화면 네비게이션 상태 관리
@@ -26,7 +28,7 @@ struct ContentView: View {
                 
 
                 // travelItem의 유무 [메인화면 <-> empty화면]
-                (travelItem != nil ? AnyView(MainView()) : AnyView(EmptyMainView(navigateToAddTravel: $navigateToAddTravel)))
+                (travelItem != nil ? AnyView(MainView(shouldRefreshMain: $shouldRefresh)) : AnyView(EmptyMainView(navigateToAddTravel: $navigateToAddTravel)))
                     .tabItem {
                         Image(systemName: "house")
                         Text("홈")
@@ -41,8 +43,14 @@ struct ContentView: View {
                     .tag(1)
                     
             }
+            .onChange(of: shouldRefresh) { _ in
+                print("shouldRefresh")
+                fetchTravelData()
+            }
             .onAppear {
                 fetchTravelData()
+                let gyroManager = GyroManager.shared
+                gyroManager.setLocationText(travelItem?.location ?? "유럽")
             }
             .toolbar {
                 // 툴바 좌측 환율 화면 이동 버튼

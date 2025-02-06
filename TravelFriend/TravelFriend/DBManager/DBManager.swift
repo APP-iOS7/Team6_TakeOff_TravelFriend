@@ -42,6 +42,17 @@ class DBManager {
         saveContext()
     }
     
+    func deleteAllExpenses() {
+        // DailyExpense 데이터 모두 삭제
+        let expenseFetchDescriptor = FetchDescriptor<DailyExpense>()
+        if let expenses = try? modelContext.fetch(expenseFetchDescriptor) {
+            expenses.forEach { expense in
+                modelContext.delete(expense)
+            }
+        }
+        saveContext()
+    }
+    
     /// 여행 데이터 가져오기
     func fetchTravel() -> [Travel] {
         let descriptor = FetchDescriptor<Travel>()
