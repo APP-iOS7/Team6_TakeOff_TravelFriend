@@ -173,7 +173,7 @@ struct DailyExpenseListView: View {
             }
         }
         .sheet(isPresented: $showDailySpendingEditView) {
-            EditDailySpendingView()
+            // EditDailySpendingView()
         }
         .onAppear {
             dbManager = DBManager(modelContext: modelContext)

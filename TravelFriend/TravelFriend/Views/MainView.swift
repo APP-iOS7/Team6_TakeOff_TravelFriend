@@ -11,7 +11,7 @@ struct MainView: View {
     var body: some View {
         VStack {
             MainHeaderView()
-            MainChartView()
+            MainChartView(dailyExpenses: [])
         }
     }
 }
