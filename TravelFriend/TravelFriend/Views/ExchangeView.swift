@@ -8,12 +8,6 @@
 import SwiftUI
 import CoreMotion
 
-// JSON 데이터 모델
-struct ExchangeRateResponse: Codable
-{
-    let conversion_rates: [String: Double]
-}
-
 // ExchangeView
 struct ExchangeView: View
 {
@@ -26,16 +20,17 @@ struct ExchangeView: View
     @State private var isEditing = false // 수정 상태 체크
     @State private var showRepeatSheet = false // 팝업 상태 체크
     @State private var currencyString: String = ""
+    @State private var currencyFlag: String = ""
+    @State private var currencySign: String = ""
     var location: String // 받은 여행지
     private let motionManager = CMMotionManager()
-//    let currencyValue = ["🇨🇳 CNY", "🇪🇺 EUR", "🇯🇵 JPY", "🇰🇷 KRW", "🇺🇸 USD"] //중국, 유로, 일본, 대한민국, 미국
     
     var body: some View
     {
         VStack(alignment: .leading, spacing: 12)
         {
             Text("🏦 환율 정보")
-                .font(.title2)
+                .font(.title)
                 .fontWeight(.bold)
             VStack(alignment: .leading, spacing: 8)
             {
@@ -44,15 +39,20 @@ struct ExchangeView: View
                     Spacer()
                     Text("🇰🇷 KRW")
                         .fontWeight(.semibold)
+                        .font(.title2)
                     Spacer()
                     if let rate = exchangeMoney
                     {
-                        Text("\(rate, specifier: "%.2f")₩")
+                        Text("\(rate, specifier: "%.2f") ₩")
+                            .font(.title2)
+                            .fontWeight(.semibold)
                     }
                     else
                     {
                         Text("환율 확인 실패.")
                             .foregroundStyle(.red)
+                            .font(.title2)
+                            .fontWeight(.semibold)
                     }
                     Spacer()
                 }
@@ -61,37 +61,49 @@ struct ExchangeView: View
                 {
                     Spacer()
                     Image(systemName: "arrow.trianglehead.2.clockwise")
+                        .padding(.vertical, 10.0)
                     Spacer()
                 }
                 
                 HStack
                 {
                     Spacer()
-                    Text(currencyString == "" ? "🏳️ 국가 선택" : currencyString)
+                    Text(currencyString == "" ? "🏳️ 국가 선택" : "\(currencyFlag) \(currencyString)")
                         .fontWeight(.semibold)
+                        .font(.title2)
                     Spacer()
                     
                     if (isEditing)
                     {
                         TextField("\(inputMoney, specifier: "%.2f")", text: $inputMoneyString)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .frame(width: 180/*, height: 0*/)
+                            .textFieldStyle(RoundedTextFieldStyle())
                             .keyboardType(.decimalPad) // 숫자 키패드 표시
+                            .fontWeight(.semibold)
+                            .font(.title2)
                             .onChange(of: inputMoneyString, initial: true)
                             { _, newValue in
                                 inputMoney = Double(newValue) ?? 1.0
                             }
+                        Text(currencySign)
+                            .font(.title2)
+                            .fontWeight(.semibold)
                     }
                     else
                     {
                         Text("\(inputMoney, specifier: "%.2f")")
+                            .fontWeight(.semibold)
+                            .font(.title2)
                             .onTapGesture
                         {
                             isEditing = true
                         }
+                        Text(currencySign)
+                            .font(.title2)
+                            .fontWeight(.semibold)
                     }
                     Spacer()
                 }
-                
             }
             .padding()
             .background(Color.white)
@@ -130,13 +142,11 @@ struct ExchangeView: View
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(Color.primarySkyblue.opacity(0.3)) // 연한 배경색
+//        .background(Color.primarySkyblue.opacity(0.3)) // 배경색
+        .background(Color.primaryPink.opacity(0.3))
         .cornerRadius(12)
-        .presentationDetents([.fraction(0.4)]) // 하단 팝업 크기 지정
-        
-        
+        .presentationDetents([.fraction(0.4)]) // 하단 시트 크기 지정
     }
-    
     
     // 여행지 값 확인
     func currencyStringCheck()
@@ -148,22 +158,32 @@ struct ExchangeView: View
             case "중국":
                 print("[D]CNY Check")
                 currencyString = "CNY"
+                currencyFlag = "🇨🇳"
+                currencySign = "¥"
                 
             case "유럽":
                 print("[D]EUR Check")
                 currencyString = "EUR"
+                currencyFlag = "🇪🇺"
+                currencySign = "€"
                 
             case "일본":
                 print("[D]JPY Check")
                 currencyString = "JPY"
+                currencyFlag = "🇯🇵"
+                currencySign = "￥"
                 
             case "대한민국":
                 print("[D]KRW Check")
                 currencyString = "KRW"
+                currencyFlag = "🇰🇷"
+                currencySign = "₩"
                 
             case "미국":
                 print("[D]USD Check")
                 currencyString = "USD"
+                currencyFlag = "🇺🇸"
+                currencySign = "$"
                 
             default:
                 print("[E]currencyStringCheck ERROR")
@@ -213,6 +233,22 @@ struct ExchangeView: View
     }
 }
 
-//#Preview {
-//    ExchangeView(location: "한국")
-//}
+// JSON 데이터 모델
+struct ExchangeRateResponse: Codable
+{
+    let conversion_rates: [String: Double]
+}
+
+struct RoundedTextFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .padding(.vertical, 2)
+            .padding(.horizontal, 10)
+            .background(Color(UIColor.systemGray6))
+            .cornerRadius(12)
+    }
+}
+
+#Preview {
+    ExchangeView(location: "일본")
+}
