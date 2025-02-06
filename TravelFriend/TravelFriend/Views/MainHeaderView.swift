@@ -13,11 +13,24 @@ struct MainHeaderView: View {
     @State private var dbManager: DBManager?
     @State private var travelItem: Travel?
     
+    @State private var showingAlert = false // 알럿 표시 여부를 제어하는 상태 변수
+    
+    @Binding var shouldRefresh: Bool  // 추가
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("✈️ 여행 정보")
-                .font(.title2)
-                .fontWeight(.bold)
+            HStack {
+                Text("✈️ 여행 정보")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                Spacer()
+                Button(action: {
+                    showingAlert = true
+                    print("버튼 클릭")
+                }) {
+                    Text("🗑️")
+                }.frame(alignment: .trailing) // 버튼을 우측 정렬
+            }
             
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
@@ -57,6 +70,16 @@ struct MainHeaderView: View {
         .onAppear {
             fetchTravelData()
         }
+        .alert("삭제 확인", isPresented: $showingAlert) {
+            Button("취소", role: .cancel) { }
+            Button("삭제", role: .destructive) {
+                // 여기에 삭제 로직 추가
+                deleteTravel()
+                deleteAllExpenses()
+            }
+        } message: {
+            Text("정말 삭제하시겠습니까?")
+        }
     }
     // MARK: load swiftData
     private func fetchTravelData() {
@@ -66,8 +89,20 @@ struct MainHeaderView: View {
             travelItem = firstTravel
         }
     }
+    
+    private func deleteTravel() {
+        if let travelItem = travelItem {
+            dbManager?.deleteItem(travelItem)
+            print("삭제")
+        }
+        shouldRefresh.toggle()
+    }
+    
+    private func deleteAllExpenses() {
+        dbManager?.deleteAllExpenses()
+    }
 }
 
 #Preview {
-    MainHeaderView()
+    MainHeaderView(shouldRefresh: .constant(false))
 }
