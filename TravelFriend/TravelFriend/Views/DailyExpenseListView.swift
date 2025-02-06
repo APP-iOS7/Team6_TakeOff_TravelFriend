@@ -28,6 +28,25 @@ enum ExpenseCategoryType: String, CaseIterable {
         }
     }
     
+    var color: Color {
+        switch self {
+        case .ticket:
+            return Color.primarySkyblue
+        case .accommodation:
+            return Color.secondarySkyBlue
+        case .shopping:
+            return Color.primaryPink
+        case .transportation:
+            return Color.primaryOrange
+        case .food:
+            return Color.secondayOrange
+        case .entertainment:
+            return Color.secondaryPink
+        case .souvenir:
+            return Color.primaryBlue
+        }
+    }
+    
     static func from(_ typeString: String) -> ExpenseCategoryType? {
         return ExpenseCategoryType.allCases.first { $0.rawValue == typeString }
     }
