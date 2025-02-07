@@ -60,7 +60,7 @@ TravelFriend/
    
 |Splash | AppIcon |
 |----------|----------|
-| <div align="center"><img src="https://github.com/user-attachments/assets/e893fa71-dc82-4c8f-8588-00d8fc53a155" width="150" height="320"/></div>|<img src= "https://github.com/user-attachments/assets/32c087ad-60c0-4087-9efa-02aa4917b3bd" width="150" height="320"/> |
+| <div align="center"><img src="https://github.com/user-attachments/assets/e893fa71-dc82-4c8f-8588-00d8fc53a155" width="150" height="320"/></div>|<div align="center"><img src= "https://github.com/user-attachments/assets/32c087ad-60c0-4087-9efa-02aa4917b3bd" width="150" height="320"/></div> |
 | 앱 실행시 최초로 보이는 화면 | 앱 아이콘 |
 
 
@@ -69,7 +69,7 @@ TravelFriend/
 
 | Main Empty View | AddTravelView | Main View |
 |----------|----------|----------|
-| <img src="https://github.com/user-attachments/assets/729c3074-946f-4edc-9672-42435c627e0a" width="150" height="320"/>| <img src="https://github.com/user-attachments/assets/97eb28f6-fda5-4f90-b37e-99d9bb49187a" width="150" height="320"/> | <img src="https://github.com/user-attachments/assets/e2a5f2bf-7be2-48b9-8659-aa093393ae0d" width="150" height="320"/> |
+| <div align="center"><img src="https://github.com/user-attachments/assets/729c3074-946f-4edc-9672-42435c627e0a" width="150" height="320"/></div>| <div align="center"><img src="https://github.com/user-attachments/assets/97eb28f6-fda5-4f90-b37e-99d9bb49187a" width="150" height="320"/></div> | <div align="center"><img src="https://github.com/user-attachments/assets/e2a5f2bf-7be2-48b9-8659-aa093393ae0d" width="150" height="320"/></div> |
 | 여행정보가 없을 떄 나오는 화면 | 여행 일정 생성 뷰 | 여행정보가 있을 경우 나오는 화면 |
 
 
@@ -77,7 +77,7 @@ TravelFriend/
 
 | Column 1 | Column 2 | Column 3 |
 |----------|----------|----------|
-| <img src="https://github.com/user-attachments/assets/e96c5097-887b-46ff-a432-362eac60eef4" width="150" height="320"/> | <img src="https://github.com/user-attachments/assets/7b61e11f-2e97-447a-a340-2708ed80a3b4" width="150" height="320"/> | <img src="https://github.com/user-attachments/assets/5fddd3da-8d59-4e7b-ab17-c28c2763838e" width="150" height="320"/> |
+| <div align="center"><img src="https://github.com/user-attachments/assets/e96c5097-887b-46ff-a432-362eac60eef4" width="150" height="320"/></div> | <div align="center"><img src="https://github.com/user-attachments/assets/7b61e11f-2e97-447a-a340-2708ed80a3b4" width="150" height="320"/></div> | <div align="center"><img src="https://github.com/user-attachments/assets/5fddd3da-8d59-4e7b-ab17-c28c2763838e" width="150" height="320"/></div> |
 | 지출 내역 화면 | 지출 내역 입력 화면 | 내용 |
 
 
@@ -85,7 +85,7 @@ TravelFriend/
 
 | ExchangeView 기본 | ExchangeView sheet 입력  | ExchangeView sheet 기본 |
 |----------|----------|----------|
-| <img src="https://github.com/user-attachments/assets/e714afbc-26f3-4257-8c4e-aded0aeb9ba1" width="150" height="320"/> | <img src="https://github.com/user-attachments/assets/f313a072-dd26-47d3-926c-75b7ab8b9870" width="150" height="320"/> | <img src="https://github.com/user-attachments/assets/0708e30e-f33c-420d-8e8e-efbd7d6e7224" width="150" height="320"/> |
+| <div align="center"><img src="https://github.com/user-attachments/assets/e714afbc-26f3-4257-8c4e-aded0aeb9ba1" width="150" height="320"/></div> | <div align="center"><img src="https://github.com/user-attachments/assets/f313a072-dd26-47d3-926c-75b7ab8b9870" width="150" height="320"/></div> | <div align="center"><img src="https://github.com/user-attachments/assets/0708e30e-f33c-420d-8e8e-efbd7d6e7224" width="150" height="320"/></div> |
 | 버튼을 통해 표출한 화면 | 환율 정보 입력 화면 | 모션을 통해 표출한 화면 |
 
 
@@ -93,7 +93,7 @@ TravelFriend/
 
 | 챗봇 뷰 기본 화면 | 검색 중 표출 화면 | 결과 출력 |
 |----------|----------|----------|
-| <img src="https://github.com/user-attachments/assets/1c3d402b-51c8-4797-b97d-557ca6a50556" width="150" height="320"/>|<img src="https://github.com/user-attachments/assets/5ffc2d1d-c628-40f1-8cdf-a988844c5318" width="150" height="320"/>|<img src="https://github.com/user-attachments/assets/dd4c29a9-2604-470e-8108-d8b0be341025" width="150" height="320"/> |
+| <div align="center"><img src="https://github.com/user-attachments/assets/1c3d402b-51c8-4797-b97d-557ca6a50556" width="150" height="320"/></div>|<div align="center"><img src="https://github.com/user-attachments/assets/5ffc2d1d-c628-40f1-8cdf-a988844c5318" width="150" height="320"/></div>|<div align="center"><img src="https://github.com/user-attachments/assets/dd4c29a9-2604-470e-8108-d8b0be341025" width="150" height="320"/></div> |
 | 검색어를 제시하는 버튼이 함께 제공됩니다. | 응답 생성간 로딩 화면이 표시됩니다 | 고정된 포맷으로 이루어진 답변이 제공됩니다. |
 
 
