@@ -55,9 +55,10 @@ TravelFriend/
 
 ## Splash & APP Icon
 
-![스크린샷 2025-02-07 오전 8 35 46](https://github.com/user-attachments/assets/e893fa71-dc82-4c8f-8588-00d8fc53a155)
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 45 36](https://github.com/user-attachments/assets/9625730e-2618-4f0c-bb4b-425c41443065)
 
 
+![Simulator_Screenshot_-_iPhone_16_Pro_-_2025-02-07_at_10 10 12](https://github.com/user-attachments/assets/32c087ad-60c0-4087-9efa-02aa4917b3bd)
 
 
 |Splash | AppIcon |
@@ -65,7 +66,9 @@ TravelFriend/
 | <img src="https://github.com/user-attachments/assets/e893fa71-dc82-4c8f-8588-00d8fc53a155" width="180" height="320"/>|<img src="https://private-user-images.githubusercontent.com/132365672/410718465-1f0f7d43-e771-47a0-9e62-bfef33b100f6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzg4OTMyNDIsIm5iZiI6MTczODg5Mjk0MiwicGF0aCI6Ii8xMzIzNjU2NzIvNDEwNzE4NDY1LTFmMGY3ZDQzLWU3NzEtNDdhMC05ZTYyLWJmZWYzM2IxMDBmNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjA3JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIwN1QwMTQ5MDJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yNzQ1YWFkMmIyMDc4ZjQ4NjIzNzUyNWU4OTczODg2NzZjNWFiZDM3NmUzMzk2NjA2NjNjNzBlMzkwZDcwMDZjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.fu9S8PgqqDba8yT40XyRM2P1_lsEoRHGIPckaxuIyik" width="180" height="320"/> |
 | 앱 실행시 최초로 보이는 화면 | 앱 아이콘 |
 
-
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 45 39](https://github.com/user-attachments/assets/729c3074-946f-4edc-9672-42435c627e0a)
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 46 44](https://github.com/user-attachments/assets/97eb28f6-fda5-4f90-b37e-99d9bb49187a)
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 47 18](https://github.com/user-attachments/assets/e2a5f2bf-7be2-48b9-8659-aa093393ae0d)
 
 
 ## MainView
@@ -78,7 +81,9 @@ TravelFriend/
 
 
 ## MainView
-
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 48 07](https://github.com/user-attachments/assets/e96c5097-887b-46ff-a432-362eac60eef4)
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 49 57](https://github.com/user-attachments/assets/7b61e11f-2e97-447a-a340-2708ed80a3b4)
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 50 12](https://github.com/user-attachments/assets/5fddd3da-8d59-4e7b-ab17-c28c2763838e)
 
 | Column 1 | Column 2 | Column 3 |
 |----------|----------|----------|
@@ -87,6 +92,9 @@ TravelFriend/
 
 
 ## ExchangeView
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 45 50](https://github.com/user-attachments/assets/e714afbc-26f3-4257-8c4e-aded0aeb9ba1)
+![IMG_4243](https://github.com/user-attachments/assets/f313a072-dd26-47d3-926c-75b7ab8b9870)
+![IMG_4242](https://github.com/user-attachments/assets/0708e30e-f33c-420d-8e8e-efbd7d6e7224)
 
 
 | ExchangeView 기본 | ExchangeView sheet 입력  | ExchangeView sheet 기본 |
@@ -96,6 +104,9 @@ TravelFriend/
 
 
 ### ChatBotView
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 50 18](https://github.com/user-attachments/assets/1c3d402b-51c8-4797-b97d-557ca6a50556)
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 51 42](https://github.com/user-a![Simulator Screenshot - iPhone 16 Pro - 2025-02-07 at 08 51 26](https://github.com/user-attachments/assets/dfefaf5e-0749-471f-a961-dfcd7ab94855)
+ttachments/assets/be198c7e-f2ca-4dc4-be50-1a6c10adec4d)
 
 
 | 챗봇 뷰 기본 화면 | 검색 중 표출 화면 | 결과 출력 |
