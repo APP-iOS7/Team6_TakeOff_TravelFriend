@@ -75,7 +75,7 @@ TravelFriend/
 
 ## MainView
 
-| Column 1 | Column 2 | Column 3 |
+| DailyExpenseListView | DailyExpenseListView | ContentView |
 |----------|----------|----------|
 | <div align="center"><img src="https://github.com/user-attachments/assets/e96c5097-887b-46ff-a432-362eac60eef4" width="150" height="320"/></div> | <div align="center"><img src="https://github.com/user-attachments/assets/7b61e11f-2e97-447a-a340-2708ed80a3b4" width="150" height="320"/></div> | <div align="center"><img src="https://github.com/user-attachments/assets/5fddd3da-8d59-4e7b-ab17-c28c2763838e" width="150" height="320"/></div> |
 | <div align="center">지출 내역 화면</div> | <div align="center">지출 내역 입력 화면</div> | <div align="center">내용</div> |
