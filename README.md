@@ -55,7 +55,9 @@ TravelFriend/
 
 ## Splash & APP Icon
 
+<div align="center" >
 
+   
 |Splash | AppIcon |
 |----------|----------|
 | <img src="https://github.com/user-attachments/assets/e893fa71-dc82-4c8f-8588-00d8fc53a155" width="150" height="320"/>|<img src= "https://github.com/user-attachments/assets/32c087ad-60c0-4087-9efa-02aa4917b3bd" width="150" height="320"/> |
@@ -93,6 +95,8 @@ TravelFriend/
 |----------|----------|----------|
 | <img src="https://github.com/user-attachments/assets/1c3d402b-51c8-4797-b97d-557ca6a50556" width="150" height="320"/>|<img src="https://github.com/user-attachments/assets/5ffc2d1d-c628-40f1-8cdf-a988844c5318" width="150" height="320"/>|<img src="https://github.com/user-attachments/assets/dd4c29a9-2604-470e-8108-d8b0be341025" width="150" height="320"/> |
 | 검색어를 제시하는 버튼이 함께 제공됩니다. | 응답 생성간 로딩 화면이 표시됩니다 | 고정된 포맷으로 이루어진 답변이 제공됩니다. |
+
+</div>
 
 
 # **팀 소개 & 회고**
