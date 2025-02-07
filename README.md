@@ -56,7 +56,7 @@ TravelFriend/
 ## Splash & APP Icon
 
 
-<div style="width: 10%; font-size: 14px;">
+<div style="width: 1%; font-size: 14px;">
 
 |Splash | AppIcon |
 |----------|----------|
