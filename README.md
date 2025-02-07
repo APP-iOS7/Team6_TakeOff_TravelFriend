@@ -94,7 +94,7 @@ TravelFriend/
 | 챗봇 뷰 기본 화면 | 검색 중 표출 화면 | 결과 출력 |
 |----------|----------|----------|
 | <div align="center"><img src="https://github.com/user-attachments/assets/1c3d402b-51c8-4797-b97d-557ca6a50556" width="150" height="320"/></div>|<div align="center"><img src="https://github.com/user-attachments/assets/5ffc2d1d-c628-40f1-8cdf-a988844c5318" width="150" height="320"/></div>|<div align="center"><img src="https://github.com/user-attachments/assets/dd4c29a9-2604-470e-8108-d8b0be341025" width="150" height="320"/></div> |
-| <div align="center">검색어를 제시하는 버튼이 함께 제공됩니다.</div> | <div align="center">응답 생성간 로딩 화면이 표시됩니다</div> | <div align="center">고정된 포맷으로 이루어진 답변이 제공됩니다.</div> |
+| <div align="center">검색어를 제시하는 버튼 제공.</div> | <div align="center">응답 생성간 로딩 화면이 표시</div> | <div align="center">고정된 포맷으로 이루어진 답변 제공.</div> |
 
 
 
